@@ -3,6 +3,7 @@ import { CartIcon } from "../icons";
 
 const Navbar = () => {
   const { amount } = useSelector((store) => store.cart);
+
   return (
     <nav>
       <div className="nav-center">

@@ -1,16 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
+
 import CartItem from "./CartItem";
-import { clearCart } from "../features/cart/cartSlice";
+import { openModal } from "../features/modal/modalSlice";
 
 const CartContainer = () => {
   const dispatch = useDispatch();
   const { cartItems, amount, total } = useSelector((store) => store.cart);
-  // dispatch(calculateTotals());
 
   if (amount < 1) {
     return (
-      <section>
-        <h2>your bag</h2>
+      <section className="cart">
+        <header>
+          <h2>your bag</h2>
+        </header>
         <h4 className="empty-crt">your bag is empty</h4>
       </section>
     );
@@ -39,7 +41,7 @@ const CartContainer = () => {
         <button
           type="button"
           className="btn clear-btn"
-          onClick={() => dispatch(clearCart())}
+          onClick={() => dispatch(openModal())}
         >
           clear cart
         </button>
