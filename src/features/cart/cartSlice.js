@@ -10,10 +10,13 @@ const initialState = {
   isLoading: true,
 };
 
-export const getCartItems = createAsyncThunk("cart/getCartItems", () => {
-  return fetch(url)
-    .then((resp) => resp.json())
-    .catch((error) => console.log(error));
+export const getCartItems = createAsyncThunk("cart/getCartItems", async () => {
+  try {
+    const resp = await axios(url);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const cartSlice = createSlice({
@@ -50,17 +53,18 @@ const cartSlice = createSlice({
       state.total = total;
     },
   },
-  extraReducers: {
-    [getCartItems.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [getCartItems.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.cartItems = action.payload;
-    },
-    [getCartItems.rejected]: (state) => {
-      state.isLoading = true;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCartItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartItems = action.payload;
+      })
+      .addCase(getCartItems.rejected, (state) => {
+        state.isLoading = false;
+      });
   },
 });
 
